@@ -3,7 +3,7 @@ using ECommerce.Catalog.Domain.Entities;
 
 namespace ECommerce.Catalog.API.Controllers;
 
-public class ProductRequest
+public class AddProductRequest
 {
     public string Name { get; set; }
     public string Description { get; set; }

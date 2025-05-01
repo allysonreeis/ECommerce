@@ -1,4 +1,5 @@
 ﻿using ECommerce.Catalog.Application.UseCases.AddProduct;
+using ECommerce.Catalog.Application.UseCases.GetProductById;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddProduct([FromBody] ProductRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddProduct([FromBody] AddProductRequest request, CancellationToken cancellationToken)
     {
         if (request == null) return BadRequest();
         var input = request.ToInput();
@@ -24,5 +25,18 @@ public class ProductController : ControllerBase
         await _mediator.Send(input, cancellationToken);
 
         return Ok(request);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProductById([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        if (id == Guid.Empty) return BadRequest();
+
+        var input = new GetProductByIdInput(id);
+        var product = await _mediator.Send(input, cancellationToken);
+
+        if (product == null) return NotFound();
+
+        return Ok(product);
     }
 }

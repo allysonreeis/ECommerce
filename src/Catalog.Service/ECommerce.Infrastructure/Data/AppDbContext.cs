@@ -44,6 +44,9 @@ public class AppDbContext : DbContext
                 .IsRequired()
                 .HasColumnType("datetime");
 
+            entity.Navigation(e => e.Category)
+                .AutoInclude(); // Automatically include the related category entity
+
             // relational configuration with category
             entity.HasOne(e => e.Category)
                 .WithMany()

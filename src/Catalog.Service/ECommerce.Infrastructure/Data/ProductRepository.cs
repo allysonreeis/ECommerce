@@ -28,9 +28,12 @@ public class ProductRepository : IProductRepository
         throw new NotImplementedException();
     }
 
-    public Task<Product> GetByIdAsync(Guid id)
+    public async Task<Product> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        if (id == Guid.Empty) throw new ArgumentException("Invalid product ID", nameof(id));
+
+        var product = await _dbContext.Products.FindAsync(id);
+        return product ?? throw new KeyNotFoundException($"Product with ID {id} not found.");
     }
 
     public Task UpdateAsync(Product product)
