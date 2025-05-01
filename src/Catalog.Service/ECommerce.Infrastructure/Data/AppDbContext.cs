@@ -44,6 +44,9 @@ public class AppDbContext : DbContext
                 .IsRequired()
                 .HasColumnType("datetime");
 
+            entity.Property(e => e.DeletedAt)
+                .HasColumnType("datetime");
+
             entity.Navigation(e => e.Category)
                 .AutoInclude(); // Automatically include the related category entity
 
@@ -52,6 +55,8 @@ public class AppDbContext : DbContext
                 .WithMany()
                 .HasForeignKey(e => e.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasQueryFilter(e => !e.IsDeleted); // Global filter for soft delete
         });
 
         modelBuilder.Entity<Category>(entity =>

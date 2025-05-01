@@ -16,6 +16,9 @@ public class Product : Entity
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
 
+    public bool IsDeleted { get; private set; } = false;
+    public DateTime? DeletedAt { get; private set; } = null;
+
     public Product(string name, string description, decimal price, string sku, int stockQuantity, Guid categoryId, ICollection<string> images)
     {
         Id = Guid.NewGuid();
@@ -30,5 +33,14 @@ public class Product : Entity
         UpdatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new ProductAddedEvent(Id, Name));
+    }
+
+    public void MarkAsDeleted()
+    {
+        if (IsDeleted)
+            throw new InvalidOperationException("Product is already deleted.");
+        IsDeleted = true;
+        DeletedAt = DateTime.UtcNow;
+        AddDomainEvent(new ProductDeletedEvent(Id, Name));
     }
 }
