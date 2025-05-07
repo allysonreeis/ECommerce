@@ -15,11 +15,11 @@ public class AddProductUseCase : IRequestHandler<AddProductInput, AddProductOutp
     public async Task<AddProductOutput> Handle(AddProductInput input, CancellationToken cancellationToken)
     {
 
-        var product = new Product(input.Name, input.Description, input.Price, input.Sku, input.StockQuantity, input.CategoryId, null);
+        var product = new Product(input.Name, input.Description, input.Price, input.Sku, input.CategoryId, null);
 
         var productAdded = await _productRepository.AddAsync(product);
 
-        var output = new AddProductOutput(productAdded.Id, productAdded.Name, productAdded.Description, productAdded.Price, productAdded.Sku, productAdded.StockQuantity, productAdded.CategoryId);
+        var output = new AddProductOutput(productAdded.Id, productAdded.Name, productAdded.Description, productAdded.Price, productAdded.Sku, productAdded.CategoryId);
 
         return output;
     }

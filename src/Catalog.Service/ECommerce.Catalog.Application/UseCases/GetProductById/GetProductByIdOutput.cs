@@ -12,17 +12,15 @@ public class GetProductByIdOutput
     public string Name { get; set; }
     public string Description { get; set; }
     public decimal Price { get; set; }
-    public int Stock { get; set; }
     public Category Category { get; set; }
     public ICollection<string> ImageUrl { get; set; }
 
-    public GetProductByIdOutput(Guid id, string name, string description, decimal price, int stock, Category category, ICollection<string> imageUrl)
+    public GetProductByIdOutput(Guid id, string name, string description, decimal price, Category category, ICollection<string> imageUrl)
     {
         Id = id;
         Name = name;
         Description = description;
         Price = price;
-        Stock = stock;
         Category = category;
         ImageUrl = imageUrl;
     }
@@ -34,7 +32,6 @@ public class GetProductByIdOutput
             product.Name,
             product.Description,
             product.Price,
-            product.StockQuantity,
             product.Category,
             product.Images
         );

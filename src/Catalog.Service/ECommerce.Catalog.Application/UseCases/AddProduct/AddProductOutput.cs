@@ -6,17 +6,15 @@ public class AddProductOutput
     public string Description { get; set; }
     public decimal Price { get; set; }
     public string Sku { get; set; }
-    public int Stock { get; set; }
     public Guid CategoryId { get; set; }
 
-    public AddProductOutput(Guid id, string name, string description, decimal price, string sku, int stock, Guid categoryId)
+    public AddProductOutput(Guid id, string name, string description, decimal price, string sku, Guid categoryId)
     {
         Id = id;
         Name = name;
         Description = description;
         Price = price;
         Sku = sku;
-        Stock = stock;
         CategoryId = categoryId;
     }
 }

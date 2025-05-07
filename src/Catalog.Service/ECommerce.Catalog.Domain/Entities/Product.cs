@@ -11,7 +11,6 @@ public class Product : Entity
     public Guid CategoryId { get; private set; }
     public decimal Price { get; private set; }
     public string Sku { get; private set; }
-    public int StockQuantity { get; set; }
     public ProductStatus Status { get; private set; } = ProductStatus.Draft;
     public ICollection<string> Images { get; private set; } = new List<string>();
     public DateTime CreatedAt { get; private set; }
@@ -20,14 +19,13 @@ public class Product : Entity
     public bool IsDeleted { get; private set; } = false;
     public DateTime? DeletedAt { get; private set; } = null;
 
-    public Product(string name, string description, decimal price, string sku, int stockQuantity, Guid categoryId, ICollection<string> images)
+    public Product(string name, string description, decimal price, string sku, Guid categoryId, ICollection<string> images)
     {
         Id = Guid.NewGuid();
         Name = name;
         Description = description;
         Price = price;
         Sku = sku;
-        StockQuantity = stockQuantity;
         CategoryId = categoryId;
         Images = images;
         CreatedAt = DateTime.UtcNow;

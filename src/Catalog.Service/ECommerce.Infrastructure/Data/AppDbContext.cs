@@ -1,5 +1,7 @@
 ﻿using ECommerce.Catalog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq;
 
 namespace ECommerce.Infrastructure.Data;
 public class AppDbContext : DbContext
@@ -28,14 +30,17 @@ public class AppDbContext : DbContext
             entity.Property(e => e.Sku)
                 .IsRequired()
                 .HasMaxLength(50);
-            entity.Property(e => e.StockQuantity)
-                .IsRequired();
 
             entity.Property(e => e.Images)
                 .IsRequired()
                 .HasConversion(
                     v => string.Join(',', v),
-                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList())
+                .Metadata.SetValueComparer(
+                    new ValueComparer<ICollection<string>>(
+                        (c1, c2) => c1.SequenceEqual(c2),
+                        c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                        c => c.ToList()));
 
             entity.Property(e => e.CreatedAt)
                 .IsRequired()
