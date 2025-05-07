@@ -2,6 +2,7 @@ using ECommerce.Catalog.Application.DepencyInjection;
 using ECommerce.Catalog.Domain.Events.Product;
 using ECommerce.Catalog.Domain.Events.shared;
 using ECommerce.Infrastructure.DepencyInjection;
+using Microsoft.AspNetCore.Builder;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +24,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    //app.MapScalarApiReference();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/openapi/v1.json", "My API V1");
+    });
 }
 
 app.UseHttpsRedirection();

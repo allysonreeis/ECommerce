@@ -11,10 +11,10 @@ public class AddProductRequest
     public decimal Price { get; set; }
     public string Sku { get; set; }
     public int StockQuantity { get; set; }
-    public ICollection<string> Images { get; set; } = new List<string>();
+    public IFormFileCollection Files { get; set; }
 
     public AddProductInput ToInput()
     {
-        return new AddProductInput(Name, Description, CategoryId, Price, Sku, StockQuantity, Images);
+        return new AddProductInput(Name, Description, CategoryId, Price, Sku, StockQuantity);
     }
 }

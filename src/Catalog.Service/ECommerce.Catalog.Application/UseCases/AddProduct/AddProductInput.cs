@@ -9,8 +9,8 @@ public class AddProductInput : IRequest<AddProductOutput>
     public decimal Price { get; set; }
     public string Sku { get; set; }
     public int StockQuantity { get; set; }
-    public ICollection<string> Images { get; set; } = new List<string>();
-    public AddProductInput(string name, string description, Guid categoryId, decimal price, string sku, int stockQuantity, ICollection<string> images)
+
+    public AddProductInput(string name, string description, Guid categoryId, decimal price, string sku, int stockQuantity)
     {
         Name = name;
         Description = description;
@@ -18,6 +18,5 @@ public class AddProductInput : IRequest<AddProductOutput>
         Price = price;
         Sku = sku;
         StockQuantity = stockQuantity;
-        Images = images;
     }
 }

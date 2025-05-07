@@ -12,6 +12,7 @@ public class Product : Entity
     public decimal Price { get; private set; }
     public string Sku { get; private set; }
     public int StockQuantity { get; set; }
+    public ProductStatus Status { get; private set; } = ProductStatus.Draft;
     public ICollection<string> Images { get; private set; } = new List<string>();
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
@@ -43,4 +44,30 @@ public class Product : Entity
         DeletedAt = DateTime.UtcNow;
         AddDomainEvent(new ProductDeletedEvent(Id, Name));
     }
+
+    public void MarkAsDraft()
+    {
+        if (Status == ProductStatus.Draft)
+            throw new InvalidOperationException("Product is already in draft status.");
+        Status = ProductStatus.Draft;
+        //AddDomainEvent(new ProductStatusChangedEvent(Id, Name, Status));
+    }
+
+    public void MarkAsActive()
+    {
+        if (Status == ProductStatus.Active)
+            throw new InvalidOperationException("Product is already in active status.");
+        Status = ProductStatus.Active;
+        //AddDomainEvent(new ProductStatusChangedEvent(Id, Name, Status));
+    }
+
+    public void MarkAsInactive()
+    {
+        if (Status == ProductStatus.Inactive)
+            throw new InvalidOperationException("Product is already in inactive status.");
+        Status = ProductStatus.Inactive;
+        //AddDomainEvent(new ProductStatusChangedEvent(Id, Name, Status));
+    }
+
+
 }

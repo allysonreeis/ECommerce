@@ -17,10 +17,13 @@ public class ProductController : ControllerBase
         _mediator = mediator;
     }
 
+    [Consumes("multipart/form-data")]
     [HttpPost]
-    public async Task<IActionResult> AddProduct([FromBody] AddProductRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddProduct([FromForm] AddProductRequest request, CancellationToken cancellationToken)
     {
-        if (request == null) return BadRequest();
+        if (request == null || request.Files.Count == 0) return BadRequest();
+        if (request.Files.Count > 6) return BadRequest("You can only upload a maximum of 6 files.");
+
         var input = request.ToInput();
 
         await _mediator.Send(input, cancellationToken);
