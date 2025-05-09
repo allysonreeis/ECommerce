@@ -1,5 +1,8 @@
-﻿using ECommerce.Catalog.Domain.DataAccess.Interfaces;
+﻿using Azure.Storage.Blobs;
+using ECommerce.Catalog.Application.Services;
+using ECommerce.Catalog.Domain.DataAccess.Interfaces;
 using ECommerce.Infrastructure.Data;
+using ECommerce.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +16,15 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(configuration.GetConnectionString("CatalogDb")));
 
+        services.AddSingleton<BlobServiceClient>(sp =>
+        {
+            var connectionString = configuration.GetConnectionString("AzureBlobStorage");
+            return new BlobServiceClient(connectionString);
+        });
+
         services.AddScoped<IProductRepository, ProductRepository>();
+
+        services.AddScoped<IImageStorageService, AzureBlobImageStorageService>();
         return services;
     }
 }

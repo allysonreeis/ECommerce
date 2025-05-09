@@ -32,7 +32,6 @@ public class AppDbContext : DbContext
                 .HasMaxLength(50);
 
             entity.Property(e => e.Images)
-                .IsRequired()
                 .HasConversion(
                     v => string.Join(',', v),
                     v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList())
@@ -61,7 +60,8 @@ public class AppDbContext : DbContext
                 .HasForeignKey(e => e.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasQueryFilter(e => !e.IsDeleted); // Global filter for soft delete
+            // Global filter for soft delete by status
+            entity.HasQueryFilter(e => e.DeletedAt == null && e.Status != ProductStatus.Deleted);
         });
 
         modelBuilder.Entity<Category>(entity =>

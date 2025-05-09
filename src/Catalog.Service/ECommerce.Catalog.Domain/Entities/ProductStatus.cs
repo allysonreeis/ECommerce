@@ -4,5 +4,5 @@ public enum ProductStatus
     Draft,
     Active,
     Inactive,
-    Discontinued
+    Deleted
 }

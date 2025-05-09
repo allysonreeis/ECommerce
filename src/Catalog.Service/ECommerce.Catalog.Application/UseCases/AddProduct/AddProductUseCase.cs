@@ -15,7 +15,7 @@ public class AddProductUseCase : IRequestHandler<AddProductInput, AddProductOutp
     public async Task<AddProductOutput> Handle(AddProductInput input, CancellationToken cancellationToken)
     {
 
-        var product = new Product(input.Name, input.Description, input.Price, input.Sku, input.CategoryId, null);
+        var product = new Product(input.Name, input.Description, input.Price, input.Sku, input.CategoryId, ["linkimage.com/image_1", "linkimage.com/image_2", "linkimage.com/image_3"]);
 
         var productAdded = await _productRepository.AddAsync(product);
 

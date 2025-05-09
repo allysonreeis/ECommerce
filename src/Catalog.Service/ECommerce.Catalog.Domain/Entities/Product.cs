@@ -16,7 +16,6 @@ public class Product : Entity
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
 
-    public bool IsDeleted { get; private set; } = false;
     public DateTime? DeletedAt { get; private set; } = null;
 
     public Product(string name, string description, decimal price, string sku, Guid categoryId, ICollection<string> images)
@@ -36,10 +35,12 @@ public class Product : Entity
 
     public void MarkAsDeleted()
     {
-        if (IsDeleted)
+        if (Status == ProductStatus.Deleted)
             throw new InvalidOperationException("Product is already deleted.");
-        IsDeleted = true;
+
+        Status = ProductStatus.Deleted;
         DeletedAt = DateTime.UtcNow;
+
         AddDomainEvent(new ProductDeletedEvent(Id, Name));
     }
 

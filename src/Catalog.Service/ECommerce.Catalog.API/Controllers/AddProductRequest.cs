@@ -11,7 +11,6 @@ public class AddProductRequest
     public decimal Price { get; set; }
     public string Sku { get; set; }
     public int StockQuantity { get; set; }
-    public IFormFileCollection Files { get; set; }
 
     public AddProductInput ToInput()
     {

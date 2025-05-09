@@ -1,4 +1,5 @@
 ﻿using ECommerce.Catalog.Application.UseCases.AddProduct;
+using ECommerce.Catalog.Application.UseCases.AddProductImage;
 using ECommerce.Catalog.Application.UseCases.DeleteProduct;
 using ECommerce.Catalog.Application.UseCases.GetProductById;
 using MediatR;
@@ -17,18 +18,16 @@ public class ProductController : ControllerBase
         _mediator = mediator;
     }
 
-    [Consumes("multipart/form-data")]
     [HttpPost]
     public async Task<IActionResult> AddProduct([FromForm] AddProductRequest request, CancellationToken cancellationToken)
     {
-        if (request == null || request.Files.Count == 0) return BadRequest();
-        if (request.Files.Count > 6) return BadRequest("You can only upload a maximum of 6 files.");
+        if (request == null) return BadRequest();
 
         var input = request.ToInput();
 
-        await _mediator.Send(input, cancellationToken);
+        var output = await _mediator.Send(input, cancellationToken);
 
-        return Ok(request);
+        return CreatedAtAction(nameof(GetProductById), new { id = output.Id }, output);
     }
 
     [HttpGet("{id}")]
@@ -54,5 +53,14 @@ public class ProductController : ControllerBase
         if (!isDeleted) return NotFound();
 
         return NoContent();
+    }
+
+    [HttpPost("image")]
+    public async Task<IActionResult> AddProductImage(IFormFile file, CancellationToken cancellationToken)
+    {
+        if (file == null || file.Length == 0) return BadRequest();
+        var input = new AddProductImageInput(file.OpenReadStream(), file.ContentType);
+        var imageUrl = await _mediator.Send(input, cancellationToken);
+        return Ok(new { ImageUrl = imageUrl });
     }
 }
