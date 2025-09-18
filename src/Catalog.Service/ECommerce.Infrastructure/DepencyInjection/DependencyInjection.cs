@@ -14,7 +14,8 @@ public static class DependencyInjection
     {
 
         services.AddDbContext<AppDbContext>(options =>
-        options.UseSqlServer(configuration.GetConnectionString("CatalogDb")));
+            options.UseSqlServer(configuration.GetConnectionString("CatalogDb"))
+        );
 
         services.AddSingleton<BlobServiceClient>(sp =>
         {
