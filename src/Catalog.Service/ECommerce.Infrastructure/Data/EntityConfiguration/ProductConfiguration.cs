@@ -23,6 +23,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasMaxLength(50);
 
         builder.Property(e => e.Images)
+            .IsRequired(false)
             .HasConversion(
                 v => string.Join(',', v),
                 v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList())
