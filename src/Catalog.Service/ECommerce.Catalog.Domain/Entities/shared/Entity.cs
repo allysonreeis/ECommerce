@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ECommerce.Catalog.Domain.Entities.shared;
 public class Entity
 {
-    private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
+    /*private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     public void AddDomainEvent(IDomainEvent domainEvent)
@@ -24,5 +24,5 @@ public class Entity
     public void ClearDomainEvents()
     {
         _domainEvents.Clear();
-    }
+    }*/
 }

@@ -1,8 +1,9 @@
 ﻿namespace ECommerce.Catalog.Domain.Entities;
-public enum ProductStatus
+
+public enum ProductLifeCycleStatus
 {
-    Draft,
-    Active,
     Inactive,
+    Active,
+    Archived,
     Deleted
 }

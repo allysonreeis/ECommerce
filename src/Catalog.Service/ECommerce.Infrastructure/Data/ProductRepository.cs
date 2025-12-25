@@ -1,5 +1,6 @@
 ﻿using ECommerce.Catalog.Domain.DataAccess.Interfaces;
 using ECommerce.Catalog.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Data;
 public class ProductRepository : IProductRepository
@@ -28,9 +29,9 @@ public class ProductRepository : IProductRepository
         return true;
     }
 
-    public Task<IEnumerable<Product>> GetAllAsync()
+    public async Task<IEnumerable<Product>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _dbContext.Products.ToListAsync();
     }
 
     public async Task<Product> GetByIdAsync(Guid id)

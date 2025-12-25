@@ -1,4 +1,5 @@
-﻿using ECommerce.Catalog.Domain.Events.shared;
+﻿using ECommerce.Catalog.Application.Interfaces;
+using ECommerce.Catalog.Domain.Events.shared;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,12 @@ namespace ECommerce.Infrastructure.Events;
 internal class DomainEventService : IDomainEventService
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly IEventPublisher _eventPublisher;
 
-    public DomainEventService(IServiceProvider serviceProvider)
+    public DomainEventService(IServiceProvider serviceProvider, IEventPublisher eventPublisher)
     {
         _serviceProvider = serviceProvider;
+        _eventPublisher = eventPublisher;
     }
 
     public async Task PublishAsync<TEvent>(TEvent domainEvent) where TEvent : IDomainEvent
@@ -25,5 +28,7 @@ internal class DomainEventService : IDomainEventService
         {
             await handler.Handle(domainEvent);
         }
+
+        await _eventPublisher.PublishAsync(domainEvent, "product.events", CancellationToken.None);
     }
 }

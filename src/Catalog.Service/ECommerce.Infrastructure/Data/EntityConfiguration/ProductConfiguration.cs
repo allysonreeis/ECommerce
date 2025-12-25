@@ -53,6 +53,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .OnDelete(DeleteBehavior.Restrict);
 
         // Global filter for soft delete by status
-        builder.HasQueryFilter(e => e.DeletedAt == null && e.Status != ProductStatus.Deleted);
+        builder.HasQueryFilter(e => e.DeletedAt == null && e.LifeCycleStatus != ProductLifeCycleStatus.Deleted);
     }
 }

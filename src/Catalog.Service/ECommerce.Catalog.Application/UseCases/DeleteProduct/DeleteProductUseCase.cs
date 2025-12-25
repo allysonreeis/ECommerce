@@ -19,7 +19,7 @@ public class DeleteProductUseCase : IRequestHandler<DeleteProductInput, bool>
     {
         var product = await _productRepository.GetByIdAsync(request.Id);
         if (product == null) throw new KeyNotFoundException($"Product with ID {request.Id} not found.");
-        if (product.Status == ProductStatus.Deleted) throw new InvalidOperationException("Product is already deleted.");
+        if (product.LifeCycleStatus == ProductLifeCycleStatus.Deleted) throw new InvalidOperationException("Product is already deleted.");
 
         product.MarkAsDeleted();
 

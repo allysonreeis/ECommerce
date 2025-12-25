@@ -1,0 +1,24 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Itens de Solução/">
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Catalog.Service/">
+    <Project Path="src/Catalog.Service/ECommerce.Catalog.API/ECommerce.Catalog.API.csproj" />
+    <Project Path="src/Catalog.Service/ECommerce.Catalog.Application/ECommerce.Catalog.Application.csproj" />
+    <Project Path="src/Catalog.Service/ECommerce.Catalog.Domain/ECommerce.Catalog.Domain.csproj" />
+    <Project Path="src/Catalog.Service/ECommerce.Infrastructure/ECommerce.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <File Path="tests/Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/tests/Catalog.Service.Tests/">
+    <Project Path="tests/Catalog.Service.Tests/Catalog.Service.IntegrationTests/Catalog.Service.IntegrationTests.csproj" />
+    <Project Path="tests/Catalog.Service.Tests/Catalog.Service.UnitTests/Catalog.Service.UnitTests.csproj" />
+  </Folder>
+</Solution>

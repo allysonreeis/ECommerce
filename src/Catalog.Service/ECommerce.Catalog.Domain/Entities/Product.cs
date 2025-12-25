@@ -11,7 +11,8 @@ public class Product : Entity
     public Guid CategoryId { get; private set; }
     public decimal Price { get; private set; }
     public string Sku { get; private set; }
-    public ProductStatus Status { get; private set; } = ProductStatus.Draft;
+    public ProductApprovalStatus ApprovalStatus { get; private set; } = ProductApprovalStatus.Draft;
+    public ProductLifeCycleStatus LifeCycleStatus { get; private set; } = ProductLifeCycleStatus.Inactive;
     public ICollection<string> Images { get; private set; } = new List<string>();
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
@@ -30,43 +31,50 @@ public class Product : Entity
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new ProductAddedEvent(Id, Name));
+        //AddDomainEvent(new ProductAddedEvent(Id, Name));
     }
 
-    public void MarkAsDeleted()
+    public void MarkAsRejected()
     {
-        if (Status == ProductStatus.Deleted)
-            throw new InvalidOperationException("Product is already deleted.");
+        if (ApprovalStatus == ProductApprovalStatus.Rejected)
+            throw new InvalidOperationException("Product is already rejected.");
 
-        Status = ProductStatus.Deleted;
+        ApprovalStatus = ProductApprovalStatus.Rejected;
         DeletedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new ProductDeletedEvent(Id, Name));
+        //AddDomainEvent(new ProductRejectedEvent(Id, Name));
     }
 
     public void MarkAsDraft()
     {
-        if (Status == ProductStatus.Draft)
+        if (ApprovalStatus == ProductApprovalStatus.Draft)
             throw new InvalidOperationException("Product is already in draft status.");
-        Status = ProductStatus.Draft;
+        ApprovalStatus = ProductApprovalStatus.Draft;
         //AddDomainEvent(new ProductStatusChangedEvent(Id, Name, Status));
     }
 
-    public void MarkAsActive()
+    public void MarkAsApproved()
     {
-        if (Status == ProductStatus.Active)
-            throw new InvalidOperationException("Product is already in active status.");
-        Status = ProductStatus.Active;
+        if (ApprovalStatus == ProductApprovalStatus.Approved)
+            throw new InvalidOperationException("Product is already in aprroved status.");
+        ApprovalStatus = ProductApprovalStatus.Approved;
         //AddDomainEvent(new ProductStatusChangedEvent(Id, Name, Status));
     }
 
-    public void MarkAsInactive()
+    public void MarkAsPending()
     {
-        if (Status == ProductStatus.Inactive)
-            throw new InvalidOperationException("Product is already in inactive status.");
-        Status = ProductStatus.Inactive;
+        if (ApprovalStatus == ProductApprovalStatus.Pending)
+            throw new InvalidOperationException("Product is already in pending status.");
+        ApprovalStatus = ProductApprovalStatus.Pending;
         //AddDomainEvent(new ProductStatusChangedEvent(Id, Name, Status));
     }
 
-
+    public void MarkAsDeleted()
+    {
+        if (LifeCycleStatus == ProductLifeCycleStatus.Deleted)
+            throw new InvalidOperationException("Product is already deleted.");
+        LifeCycleStatus = ProductLifeCycleStatus.Deleted;
+        DeletedAt = DateTime.UtcNow;
+        //AddDomainEvent(new ProductDeletedEvent(Id, Name));
+    }
 }

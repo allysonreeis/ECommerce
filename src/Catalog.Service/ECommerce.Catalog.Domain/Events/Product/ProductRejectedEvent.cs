@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ECommerce.Catalog.Domain.Events.Product;
-public class ProductDeletedEvent : DomainEvent
+public class ProductRejectedEvent : DomainEvent
 {
     public Guid ProductId { get; }
     public string Name { get; }
-    public ProductDeletedEvent(Guid productId, string name)
+    public ProductRejectedEvent(Guid productId, string name)
     {
         ProductId = productId;
         Name = name;

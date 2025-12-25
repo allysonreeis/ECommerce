@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ECommerce.Catalog.Domain.Events.Product;
-public class ProductDeletedEventHandler : IDomainEventHandler<ProductDeletedEvent>
+public class ProductDeletedEventHandler : IDomainEventHandler<ProductRejectedEvent>
 {
-    public Task Handle(ProductDeletedEvent domainEvent)
+    public Task Handle(ProductRejectedEvent domainEvent)
     {
-        Console.WriteLine($"Handle::Processing Envent [{nameof(ProductDeletedEvent)}]");
+        Console.WriteLine($"Handle::Processing Envent [{nameof(ProductRejectedEvent)}]");
         // Handle the event (e.g., send a notification, update a database, etc.)
         return Task.CompletedTask;
     }

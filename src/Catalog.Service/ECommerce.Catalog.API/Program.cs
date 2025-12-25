@@ -15,6 +15,13 @@ builder.Services.AddOpenApi();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Host.UseDefaultServiceProvider((context, options) =>
+{
+    //options.ValidateScopes = context.HostingEnvironment.IsDevelopment();
+    options.ValidateScopes = true;
+    options.ValidateOnBuild = true;
+});
+
 // Event Handlers
 builder.Services.AddScoped<IDomainEventHandler<ProductAddedEvent>, ProductAddedEventHandler>();
 

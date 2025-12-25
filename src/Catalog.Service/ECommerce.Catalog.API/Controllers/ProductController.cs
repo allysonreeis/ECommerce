@@ -1,9 +1,9 @@
-﻿using ECommerce.Catalog.Application.UseCases.AddProduct;
+﻿using ECommerce.Catalog.Application.Products.Queries.GetPagedProducts;
 using ECommerce.Catalog.Application.UseCases.AddProductImage;
 using ECommerce.Catalog.Application.UseCases.DeleteProduct;
 using ECommerce.Catalog.Application.UseCases.GetProductById;
+using ECommerce.Catalog.Domain.DataAccess.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Catalog.API.Controllers;
@@ -56,11 +56,23 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost("image")]
+    /// summary: oi
     public async Task<IActionResult> AddProductImage(IFormFile file, CancellationToken cancellationToken)
     {
         if (file == null || file.Length == 0) return BadRequest();
         var input = new AddProductImageInput(file.OpenReadStream(), file.ContentType);
         var imageUrl = await _mediator.Send(input, cancellationToken);
         return Ok(new { ImageUrl = imageUrl });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllProducts(
+        CancellationToken cancellationToken, 
+        [FromQuery] int pageNumber = 1, 
+        [FromQuery] int pageSize = 10)
+    {
+        var products = await _mediator.Send(new GetPagedProductsQuery(pageNumber, pageSize), cancellationToken);
+        if (products == null) return NotFound();
+        return Ok(products);
     }
 }
