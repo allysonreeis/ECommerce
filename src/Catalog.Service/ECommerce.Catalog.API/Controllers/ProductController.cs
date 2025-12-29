@@ -19,6 +19,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
+    [EndpointSummary("Add a new product")]
     public async Task<IActionResult> AddProduct([FromForm] AddProductRequest request, CancellationToken cancellationToken)
     {
         if (request == null) return BadRequest();
@@ -31,6 +32,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [EndpointSummary("Get a product by ID")]
     public async Task<IActionResult> GetProductById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         if (id == Guid.Empty) return BadRequest();
@@ -44,6 +46,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [EndpointSummary("Delete a product by ID")]
     public async Task<IActionResult> DeleteProduct([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         if (id == Guid.Empty) return BadRequest();
@@ -56,16 +59,20 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost("image")]
-    /// summary: oi
-    public async Task<IActionResult> AddProductImage(IFormFile file, CancellationToken cancellationToken)
+    [EndpointSummary("Add an image to product")]
+    public async Task<IActionResult> AddProductImage(IFormFile file, [FromHeader]Guid productId, CancellationToken cancellationToken)
     {
         if (file == null || file.Length == 0) return BadRequest();
-        var input = new AddProductImageInput(file.OpenReadStream(), file.ContentType);
+        var input = new AddProductImageInput(file.OpenReadStream(), file.ContentType, productId);
         var imageUrl = await _mediator.Send(input, cancellationToken);
-        return Ok(new { ImageUrl = imageUrl });
+
+        if (imageUrl == null) return NotFound();
+
+        return Created(string.Empty, imageUrl);
     }
 
     [HttpGet]
+    [EndpointSummary("Get all products with pagination")]
     public async Task<IActionResult> GetAllProducts(
         CancellationToken cancellationToken, 
         [FromQuery] int pageNumber = 1, 

@@ -16,7 +16,7 @@ public class GetProductByIdUseCase : IRequestHandler<GetProductByIdInput, GetPro
     }
     public async Task<GetProductByIdOutput> Handle(GetProductByIdInput request, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetByIdAsync(request.ProductId);
+        var product = await _productRepository.GetByIdAsync(request.ProductId, cancellationToken);
 
         if (product == null) throw new KeyNotFoundException($"Product with ID {request.ProductId} not found.");
 

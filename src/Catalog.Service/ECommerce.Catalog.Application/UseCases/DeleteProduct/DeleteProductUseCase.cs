@@ -17,13 +17,13 @@ public class DeleteProductUseCase : IRequestHandler<DeleteProductInput, bool>
     }
     public async Task<bool> Handle(DeleteProductInput request, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.GetByIdAsync(request.Id);
+        var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
         if (product == null) throw new KeyNotFoundException($"Product with ID {request.Id} not found.");
         if (product.LifeCycleStatus == ProductLifeCycleStatus.Deleted) throw new InvalidOperationException("Product is already deleted.");
 
         product.MarkAsDeleted();
 
-        var isDeleted = await _productRepository.DeleteAsync(product);
+        var isDeleted = await _productRepository.DeleteAsync(product, cancellationToken);
 
         return isDeleted;
     }

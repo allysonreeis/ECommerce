@@ -2,7 +2,6 @@ using ECommerce.Catalog.Application.DepencyInjection;
 using ECommerce.Catalog.Domain.Events.Product;
 using ECommerce.Catalog.Domain.Events.shared;
 using ECommerce.Infrastructure.DepencyInjection;
-using Microsoft.AspNetCore.Builder;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -23,7 +23,18 @@ public static class DependencyInjection
         services.AddSingleton<BlobServiceClient>(sp =>
         {
             var connectionString = configuration.GetConnectionString("AzureBlobStorage");
-            return new BlobServiceClient(connectionString);
+            var options = new BlobClientOptions
+            {
+                Retry =
+                {
+                    MaxRetries = 2,
+                    Delay = TimeSpan.FromSeconds(2),
+                    MaxDelay = TimeSpan.FromSeconds(10),
+                    Mode = Azure.Core.RetryMode.Exponential,
+                    NetworkTimeout = TimeSpan.FromSeconds(10)
+                }
+            };
+            return new BlobServiceClient(connectionString, options);
         });
 
         services.AddScoped<IProductRepository, ProductRepository>();
