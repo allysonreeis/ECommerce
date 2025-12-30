@@ -13,9 +13,9 @@ public class GetProductByIdOutput
     public string Description { get; set; }
     public decimal Price { get; set; }
     public Category Category { get; set; }
-    public ICollection<string> ImageUrl { get; set; }
+    public IReadOnlyCollection<string> ImageUrl { get; set; }
 
-    public GetProductByIdOutput(Guid id, string name, string description, decimal price, Category category, ICollection<string> imageUrl)
+    public GetProductByIdOutput(Guid id, string name, string description, decimal price, Category category, IReadOnlyCollection<string> imageUrl)
     {
         Id = id;
         Name = name;

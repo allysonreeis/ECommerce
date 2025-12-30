@@ -13,13 +13,16 @@ public class Product : Entity
     public string Sku { get; private set; }
     public ProductApprovalStatus ApprovalStatus { get; private set; } = ProductApprovalStatus.Draft;
     public ProductLifeCycleStatus LifeCycleStatus { get; private set; } = ProductLifeCycleStatus.Inactive;
-    public ICollection<string> Images { get; private set; } = new List<string>();
+    
+    private List<string> _images = [];
+    public IReadOnlyCollection<string> Images => _images.AsReadOnly();
+
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
 
     public DateTime? DeletedAt { get; private set; } = null;
 
-    public Product(string name, string description, decimal price, string sku, Guid categoryId, ICollection<string> images)
+    public Product(string name, string description, decimal price, string sku, Guid categoryId)
     {
         Id = Guid.NewGuid();
         Name = name;
@@ -27,11 +30,17 @@ public class Product : Entity
         Price = price;
         Sku = sku;
         CategoryId = categoryId;
-        Images = images;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
 
         //AddDomainEvent(new ProductAddedEvent(Id, Name));
+    }
+
+    public void AddImage(string imageUrl)
+    {
+        _images ??= [];
+        _images.Add(imageUrl);
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void MarkAsRejected()

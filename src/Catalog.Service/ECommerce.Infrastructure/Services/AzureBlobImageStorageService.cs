@@ -19,18 +19,26 @@ public class AzureBlobImageStorageService : IImageStorageService
 
     public async Task<string> UploadImageAsync(Stream file, string contentType, CancellationToken cancellationToken)
     {
-        var containerClient = _blobServiceClient.GetBlobContainerClient("teste");
-        await containerClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken);
-
-        var blobClient = containerClient.GetBlobClient(Guid.NewGuid().ToString());
-        await blobClient.UploadAsync(file, new BlobUploadOptions
+        try
         {
-            HttpHeaders = new BlobHttpHeaders
-            {
-                ContentType = contentType
-            }
-        }, cancellationToken: cancellationToken);
+            var containerClient = _blobServiceClient.GetBlobContainerClient("teste");
+            await containerClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken);
 
-        return blobClient.Uri.ToString();
+            var blobClient = containerClient.GetBlobClient(Guid.NewGuid().ToString());
+            await blobClient.UploadAsync(file, new BlobUploadOptions
+            {
+                HttpHeaders = new BlobHttpHeaders
+                {
+                    ContentType = contentType
+                }
+            }, cancellationToken: cancellationToken);
+
+            return blobClient.Uri.ToString();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (logging mechanism not shown here)
+            throw new ApplicationException("An error occurred while uploading the image to Azure Blob Storage.", ex);
+        }
     }
 }

@@ -28,7 +28,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                 v => string.Join(',', v),
                 v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList())
             .Metadata.SetValueComparer(
-                new ValueComparer<ICollection<string>>(
+                new ValueComparer<IReadOnlyCollection<string>>(
                     (c1, c2) => c1.SequenceEqual(c2),
                     c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                     c => c.ToList()));

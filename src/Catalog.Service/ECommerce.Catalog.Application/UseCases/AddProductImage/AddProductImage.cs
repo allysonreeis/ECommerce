@@ -26,7 +26,7 @@ public class AddProductImage : IRequestHandler<AddProductImageInput, string>
 
 
             var imageUrl = await _imageStorageService.UploadImageAsync(request.Image, request.ContentType, cancellationToken);
-            product.Images.Add(imageUrl);
+            product.AddImage(imageUrl);
 
             await _productRepository.UpdateAsync(product, cancellationToken);
 
