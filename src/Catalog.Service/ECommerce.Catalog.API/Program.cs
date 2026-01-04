@@ -3,6 +3,7 @@ using ECommerce.Catalog.Domain.Events.Product;
 using ECommerce.Catalog.Domain.Events.shared;
 using ECommerce.Infrastructure.DepencyInjection;
 using Scalar.AspNetCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,14 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddSerilog();
+builder.Services.AddScoped<IDomainEventHandler<ProductAddedEvent>, ProductAddedEventHandler>();
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Host.UseDefaultServiceProvider((context, options) =>
 {
@@ -22,7 +31,6 @@ builder.Host.UseDefaultServiceProvider((context, options) =>
 });
 
 // Event Handlers
-builder.Services.AddScoped<IDomainEventHandler<ProductAddedEvent>, ProductAddedEventHandler>();
 
 var app = builder.Build();
 
