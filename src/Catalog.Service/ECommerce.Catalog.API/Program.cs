@@ -21,7 +21,10 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateLogger();
 
-builder.Host.UseSerilog();
+builder.Host.UseSerilog((ctx, lc) =>
+{
+    lc.WriteTo.Console();
+});
 
 builder.Host.UseDefaultServiceProvider((context, options) =>
 {
